@@ -70,16 +70,18 @@ double lambda;
   
   int main (int argc, char **argv)
   {
-	  // Parameter fuer 1.1
+    	  int k;
+	  /* Intializes random number generator */
+//	  time_t t;
+//	  srand((unsigned) time(&t));
+	  
+	  // Parameter
 	  ndim = 2;
 	  kappa = 8;
 	  lambda =16;
-	  int N = 10;
-	  double S_phi;
-	  
+	  int N = 10;  
 	  
 	 // Set fuer geom_pbc
-	  int k;
 	  lsize = (int *) malloc((ndim+1)*sizeof(int));
 	  for (k=1; k <= ndim; k++)
 	  {
@@ -90,14 +92,10 @@ double lambda;
 	  
 	  double complex *phi;
 	  phi = (double complex*) malloc(nvol*sizeof(double complex));
-	  for (k=0; k<nvol; k++)
-	  {
-		  phi[k] = (double complex) 0.5 + 0*I;
-	  }
-	  
-	  printf("S= %f \n", S(phi,1 + 0*I));
-	  
-	  // 1.2: random Spins
+	  double *p_old;
+	  p_old = (double *) malloc(nvol*sizeof(double));
+	  double *p_new;
+	  p_new = (double *) malloc(nvol*sizeof(double));	  
 	  
 	  double randreal, randim;
 	for(k=0; k<nvol; k++)
@@ -106,25 +104,18 @@ double lambda;
 		randim = (double)(rand() & 0xFF ) * .1;
 		phi[k] = (double complex)randreal + randim*I;
 	}
+	double P_old = P(S(phi,h));
+	calc_local_dist(phi,h,p_old);
+
+	printf("%f\n", P_old);
 	
-	double S_temp;
-	
-	S_temp = S(phi,0); // Speichern fuer Invarianztest
-	
-	printf("random Spin S = %f \n", S(phi,0));
-	printf("Beispielhafte Werte (1. / letzter) von Phi:\n %f + %f * i \n %f + %f * i \n", creal(phi[0]), cimag(phi[0]), creal(phi[nvol-1]), cimag(phi[nvol-1]));
-	
-	//Phi geht über zu Phi = exp(i*alpha)*phi
-	
-	double alpha;
-	alpha = 2;
-	for(k=0; k<nvol; k++) phi[k] *= cexp(alpha*I);
-	
-	printf("Phi = Phi * exp(i*alpha= %f): S = %f \n", alpha, S(phi,0));
-	printf("Differenz zu random Spin S: diff = %f \n", S(phi,0)-S_temp);
-	
+	int randpos = (rand() & 0xFF) % nvol;
+	printf("%d\n", randpos);
+
 	
 	free(lsize);
 	free(nn);
-	free(phi); 
+	free(phi);
+	free(p_old);
+	free(p_new);
   }
