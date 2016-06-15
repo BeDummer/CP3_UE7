@@ -51,6 +51,23 @@ double lambda;
     return (exp(S_tmp));
   }
   
+  void calc_local_dist(double complex *phi, double complex h, double *p)
+  {
+    int mu;
+    double phi_sqr;
+    double complex B;
+    for (int k=0; k<nvol; k++)
+    {
+      phi_sqr = pow(cabs(phi[k]),2);
+      B = h;
+      for(mu=1; mu<=ndim; mu++)
+      {
+	B += kappa*(phi[nn[mu][k]]+phi[nn[ndim+mu][k]])
+      }
+      p[k] = exp(conj(B)*phi[k]+B*conj(phi[k])-phi_sqr-lambda*pow((phi_sqr-1),2));
+    }
+  }
+  
   int main (int argc, char **argv)
   {
 	  // Parameter fuer 1.1
