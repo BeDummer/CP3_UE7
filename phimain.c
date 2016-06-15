@@ -15,25 +15,41 @@ double lambda;
   double complex S=0;
   int k;
   int mu;
+  double phi_sqr;
+  const double complex h_conj = conj(h);
+  double complex phi_conj;
   
   for(k=0; k<nvol; k++)
 	{
 	  //Summe fuer 1. 2. und 4. Terme
-	  S+=pow(cabs(phi[k]),2)
-	    +lambda*pow(pow(cabs(phi[k]),2)-1,2)
-	    -(conj(h)*phi[k]+conj(phi[k])*h);
+	  phi_sqr = pow(cabs(phi[k]),2);
+	  phi_conj = conj(phi[k]);
+	  
+	  S+=phi_sqr + lambda*pow(phi_sqr - 1,2)
+	    -(h_conj*phi[k]+phi_conj*h);
 	    
 	    
 	    for(mu=1; mu<=ndim; mu++)
 		{
-					S-=kappa*(conj(phi[k])*phi[nn[mu][k]]
+					S-=kappa*(phi_conj*phi[nn[mu][k]]
 					 +conj(phi[nn[mu][k]])*phi[k]);
 		}   
 	}
  return S;
  }
   
+  double complex M(double complex *phi)
+  {
+    double complex sum = 0.;
+    for (int k=0; k<nvol; k++)
+      sum += phi[k];
+    return (sum/((double) nvol));
+  }
   
+  double P(double S_tmp)
+  {
+    return (exp(S_tmp));
+  }
   
   int main (int argc, char **argv)
   {
