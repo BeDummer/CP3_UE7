@@ -17,14 +17,23 @@
 Online-Version: \href{https://www.github.com/BeDummer/CP3_UE7}{\url{https://www.github.com/BeDummer/CP3_UE7}}
 
 \section*{Aufgabe 7.1}
-
+Entsprechende Funktionen und Prozeduren wurden im Programm \url{phimain.c} implementiert und die Verifikation durchgef"uhrt. Aufgrund der Maschinengenauigkeit ist Vorsicht bei der Parameterwahl geboten, da gro\ss e Summen entstehen k"onnen, die als negatives Argument in eine Exponentialfunktion eingesetzt werden.
 
 \section*{Aufgabe 7.2}
-
+Die Berechnung wurde auf der CPU (\url{pi_cpu.c}) und auf der GPU (\url{pi_gpu.cu}) umgesetzt.
+Bei der Implementation auf der GPU haben wir uns auf eine 1D-Struktur beschr"ankt. Dadurch ist die Anzahl der Punkte pro Durchlauf auf $1024$ begrenzt. Auf der CPU wurde ein Maximum bei $10^7$ Punkten festgestellt. Es wurden jeweils 15 Durchl"aufe gemittelt und folgende Ergebnisse gefunden:
+\begin{eqnarray} \nonumber
+	\begin{array}{c|c}
+ \mbox{CPU} & \mbox{GPU}\\ \hline
+3.14156 \pm 0.00036 & 3.118 \pm 0.047  
+	\end{array}
+\end{eqnarray}
 
 \section*{Anhänge}
 \begin{itemize}
-	\item Datei: \url{bla.cu} (Hauptprogramm)
+	\item Datei: \url{phimain.c} (Aufgabe 1)
+	\item Datei: \url{pi_cpu.c} (Aufgabe 2)
+	\item Datei: \url{pi_gpu.cu} (Aufgabe 2)
 \end{itemize}
 \end{document}
 
